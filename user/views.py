@@ -4,6 +4,7 @@ import logging
 
 import simplejson
 from django.core import serializers
+from django.core.paginator import Paginator
 from django.core.serializers import json
 from django.http import HttpResponse, HttpRequest, HttpResponseBadRequest, JsonResponse
 
@@ -62,7 +63,9 @@ def pageList(request: HttpRequest):
         # 固定用法，获取用户想访问的当前页
         #userList = User.objects.values()
         # json_data = serializers.serialize("json", userList)
+        # user_list = User.objects.values().filter(id=1)
         user_list = User.objects.values().filter(id=1)
+        Paginator(user_list,)
         print("111", list(user_list))
         return JsonResponse(list(user_list))
         # print("222", json.loads(json_data))
