@@ -60,7 +60,7 @@ def reg(request: HttpRequest):
 def pageList(request: HttpRequest):
     print("查询访问接口成功")
     try:
-        # 固定用法，获取用户想访问的当前页 1234
+        # 固定用法，获取用户想访问的当前页 12341133
         #userList = User.objects.values()
         # json_data = serializers.serialize("json", userList)
         # user_list = User.objects.values().filter(id=1)
