@@ -1,8 +1,10 @@
-from django.conf.urls import url
-from .views import reg
-from .views import pageList
+from django.conf.urls import url, include
+from rest_framework import routers
 
-urlpatterns = [
-    url(r'^reg$', reg),
-    url(r'^pageList$', pageList)
-]
+from . import views
+
+router = routers.DefaultRouter()
+router.register(r'userList', views.userList)
+router.register(r'userview', views.UserViewSet, base_name='userview')
+
+urlpatterns = router.urls

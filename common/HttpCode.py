@@ -14,6 +14,7 @@ class HttpCode(object):
 def ok():
     return result()
 
+
 # def result(code=HttpCode.ok, message='', data=None, kwargs=None):
 #     print('json_dict')
 #     json_dict = {'code': code, 'message': message, 'data': data}
@@ -22,9 +23,15 @@ def ok():
 #     print('json_dict'.json_dict)
 #     return JsonResponse(json_dict)
 
+# def resultPage(code=HttpCode.ok, message='', data=None, total=0):
+#     json_dict = {'code': code, 'message': message, 'data': data, 'total': total}
+#     # print('json_dict', json_dict)
+#     return HttpResponse(json_dict)
+
+
 def result(code=HttpCode.ok, message='', data=None):
     json_dict = {'code': code, 'message': message, 'data': data}
-    print('json_dict',json_dict)
+    print('json_dict', json_dict)
     return JsonResponse(json_dict)
 
 

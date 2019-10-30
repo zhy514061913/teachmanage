@@ -11,10 +11,11 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+
 # 全局变量
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -25,12 +26,10 @@ SECRET_KEY = 'j*c^3#c&@308o2blb=c4s^lr0*b8xs4*cy7fi_83yi9(kg!&1*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-#ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = []
 ALLOWED_HOSTS = ['*']
 
-
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -40,7 +39,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',  # 解决跨域
     'user',
+    'rest_framework',
+    'django_filters'
 ]
+REST_FRAMEWORK = {
+    'EXCEPTION_HANDLER': 'common.utils.custom_execption.custom_exception_handler',
+    'DEFAULT_PAGINATION_CLASS': 'common.utils.custom_pagination.LargeResultsSetPagination',
+    'PAGE_SIZE': 20, #可选可不选，如果在此处填写，则优先级大于自定义里面的page
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -73,7 +79,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'teachmanage.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
@@ -94,7 +99,6 @@ DATABASES = {
     }
 }
 
-
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
 
@@ -113,7 +117,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
@@ -128,12 +131,10 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
-
 
 # 跨域增加忽略 --如果有错，请注意请求头中的header token
 CORS_ALLOW_CREDENTIALS = True
