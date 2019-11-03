@@ -1,12 +1,14 @@
 from rest_framework import serializers
 
-from user.models import User
+from apps.user.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User  # 要序列的model
-        fields = ('id', 'name', 'email', 'password')
+        # fields = ('id', 'name', 'email', 'password')
+        fields = "__all__"
+
 
     # 设置错误提示信息
     name = serializers.CharField(error_messages={

@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',  # 解决跨域
-    'user',
+    'apps.goods',
+    'apps.user',
     'rest_framework',
     'django_filters'
 ]

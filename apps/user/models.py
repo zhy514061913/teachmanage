@@ -16,3 +16,5 @@ class User(models.Model):
         return "".format(self.id, self.name)
 
     __str__ = __repr__
+
+

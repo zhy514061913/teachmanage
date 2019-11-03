@@ -37,7 +37,8 @@ from django.template import loader, RequestContext
 #     return HttpResponse(tem.render(context))
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^user/', include('user.urls')),
+    url(r'^user/', include('apps.user.urls')),
+    url(r'^goods/', include('apps.goods.urls')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
 ]

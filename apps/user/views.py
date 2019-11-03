@@ -4,15 +4,16 @@ import logging
 
 import simplejson
 from django.forms.models import model_to_dict
-from django.http import HttpResponse, HttpRequest, HttpResponseBadRequest
-from rest_framework import viewsets, mixins
+from django.http import HttpResponse, HttpRequest, HttpResponseBadRequest, JsonResponse
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 from rest_framework.decorators import api_view, action
-from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
+from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
 from rest_framework.views import APIView
 
+from apps.user.filters import UsersFilter
 from common.CustomViewBase import CustomViewBase
-from user.filters import UsersFilter
 from . import serializers
 from .models import User
 
@@ -44,16 +45,52 @@ class userList(CustomViewBase):
 
 
 class UserViewSet(CustomViewBase):
-    @action(methods=['get'], detail=False)
-    def info(self, request, *args, **kwargs):
-        """
-        用户详情
-        """
-        instance = self.get_object()
-        print('instance', instance)
-        serializer = self.get_serializer(instance)
-        return Response(serializer.data)
 
+    throttle_classes = (UserRateThrottle, AnonRateThrottle)
+    serializer_class = serializers.UserSerializer
+    queryset = User.objects.all()
+
+    # 设置列表页的单独auth认证也就是不认证
+    # authentication_classes = (TokenAuthentication,)
+
+    # 设置三大常用过滤器之DjangoFilterBackend, SearchFilter
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
+    # 设置排序
+    ordering_fields = ('id', 'name')
+    # 设置filter的类为我们自定义的类
+    filter_class = UsersFilter
+    # 设置我们的search字段
+    search_fields = ('name', 'id', 'password')
+
+    # 商品点击数+1
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.name = '3333'
+        instance.save()
+        serializer = self.get_serializer(instance)
+        return JsonResponse(serializer.data)
+
+    # @action(methods=['get'], detail=False)
+    # def info(self, request, *args, **kwargs):
+    #     """
+    #     用户详情
+    #     """
+    #     instance = self.get_object()
+    #     print('instance', instance)
+    #     serializer = self.get_serializer(instance)
+    #     return JsonResponse(serializer)
+
+    @action(methods=['post'], detail=False)
+    def login(self, request, *args, **kwargs):
+        '''
+        账号密码登录
+        '''
+        data = request.data
+        serializer = self.get_serializer(data)
+        var = serializer.object
+        user = serializer.object.get('user') or request.user
+        response = Response({'name': user.name})
+        return response
 
 class RegApi(APIView):
     @api_view(['POST'])

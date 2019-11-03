@@ -4,7 +4,7 @@
 #  查询过滤条件
 
 from django_filters import rest_framework as filters
-from user.models import User
+from apps.user.models import User
 
 
 class UsersFilter(filters.FilterSet):
